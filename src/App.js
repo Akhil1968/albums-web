@@ -1,28 +1,25 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
 
-class App extends Component {
+import {createStore, applyMiddleware} from 'redux';
+import ReduxThunk from 'redux-thunk';
+import {Provider} from 'react-redux';
+
+import reducers from './reducers';
+
+import AlbumList from './components/AlbumList';
+import Counter from './components/Counter';
+
+export default class App extends React.Component {
+  /* !!!!IMPORTANT!!!! store creation should be outside the render() method */
+  store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Provider store={this.store}>
+        <div style={{ flex: 1 }}>
+          <AlbumList />
+          <Counter />
+        </div>
+      </Provider>
     );
   }
 }
-
-export default App;
